@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products";  // Adjust this query as needed
+        String sql = "SELECT * FROM products";
 
-        // Use a connection from DatabaseConnection
-        Connection connection = DatabaseConnection.getInstance();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
+        try (Connection connection = DatabaseConnection.getInstance();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("name"));
-                product.setCategory(resultSet.getString("category"));
-                product.setQuantity(resultSet.getInt("quantity"));
-                product.setPrice(resultSet.getDouble("price"));
+                Product product = new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("category"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDouble("price")
+                );
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -33,7 +30,7 @@ public class ProductDAO {
         return products;
     }
 
-    public void addProduct(Product product) throws SQLException {
+    public void addProduct(Product product) {
         String sql = "INSERT INTO products (name, category, quantity, price) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getInstance();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -42,6 +39,8 @@ public class ProductDAO {
             statement.setInt(3, product.getQuantity());
             statement.setDouble(4, product.getPrice());
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
