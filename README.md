@@ -15,22 +15,9 @@ The Online Shop Management System is a backend application developed in Java, fo
 
 ---
 
-## Modules and Features
 
-### 1. **Login & Logout Module**
-- **Features**:
-    - Customer and seller authentication and validation with session tokens.
-    - Session validity for 1 hour for enhanced security.
-    - Supports login and logout for both customers and sellers.
-- **Endpoints**:
-    - `POST /register/customer`: Register a new customer.
-    - `POST /login/customer`: Log in as a customer.
-    - `POST /logout/customer`: Log out as a customer.
-    - `POST /register/seller`: Register a new seller.
-    - `POST /login/seller`: Log in as a seller.
-    - `POST /logout/seller`: Log out as a seller.
 
----
+
 
 ### 2. **Customer Module**
 - **Features**:
