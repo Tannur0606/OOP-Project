@@ -9,105 +9,95 @@ The Online Shop Management System is a backend application developed in Java, fo
 ## Tech Stack
 
 - **Programming Language**: Java
-- **Frameworks and Libraries**: Spring Framework, Spring Boot, Spring Data JPA, Hibernate
 - **Database**: PostgreSQL
 - **Build Tool**: Maven
 
 ---
 
 
-
-
-
-### 2. **Customer Module**
-- **Features**:
-    - Registering customers and logging in.
-    - Viewing available products, adding them to the cart, and placing orders.
-    - Access to order history and updating account details.
-- **Endpoints**:
-    - `GET /customer/current`: Get currently logged-in customer details.
-    - `GET /customer/orders`: Retrieve order history for the logged-in customer.
-    - `GET /customers`: Fetch all customers.
-    - `PUT /customer`: Update customer details.
-    - `DELETE /customer`: Delete a customer.
+## Main Features
+- **Customer Management**: Register, view, update, and delete customer accounts.
+- **Product Management**: Add, view, update, and delete products from the database.
+- **Cart Operations**: Add products to a cart, view cart contents, and clear the cart.
+- **Order Management**: Create, view, and manage orders for customers.
+- **Payment Management**: Update payment methods and manage payment records.
+- **Admin Features**: View all users, manage products, and oversee order and payment operations.
 
 ---
 
-### 3. **Seller Module**
-- **Features**:
-    - Administrator access to manage products and view customer details.
-    - Adding, updating, and deleting products.
-- **Endpoints**:
-    - `GET /seller/{sellerId}`: Get seller details by ID.
-    - `GET /sellers`: Fetch all sellers.
-    - `POST /addseller`: Add a new seller.
-    - `PUT /seller/update`: Update seller details.
-    - `DELETE /seller/{sellerId}`: Delete a seller by ID.
+## Core Classes and Responsibilities
+
+### 1. **Main.java**
+- Entry point of the application.
+- Provides the main menu for accessing the customer and admin features.
+- Initializes dependencies like `ProductService`, `UserService`, and `Cart`.
+
+### 2. **AdminPanel.java**
+- Manages administrative operations such as viewing all users, managing products, and orders.
+- Key administrative functions include:
+  - Adding products.
+  - Deleting users and products.
+  - Managing orders and payments.
+
+### 3. **Cart.java**
+- Represents the customer cart functionality.
+- Handles operations like adding products to the cart and clearing cart items.
+
+### 4. **ProductService.java**
+- Contains business logic for product management.
+- Interfaces with the database to perform CRUD operations for products.
+
+### 5. **UserService.java**
+- Manages customer and admin account operations.
+- Contains methods for:
+  - Adding, updating, and deleting users.
+  - Updating payment methods for orders.
+
+### 6. **DatabaseConnection.java**
+- Manages the database connection using JDBC.
+- Ensures smooth database operations by providing reusable connection objects.
+
+### 7. **Order.java**
+- Represents an order entity.
+- Contains properties like order ID, products, total amount, and order status.
+
+### 8. **Payments.java**
+- Represents payment operations and payment method records.
+- Includes constants like `CREDIT_CARD`, `DEBIT_CARD`, `PAYPAL`, and `CASH_ON_DELIVERY`.
 
 ---
 
-### 4. **Product Module**
-- **Features**:
-    - Managing product inventory, including adding, updating, and deleting products.
-    - Viewing products by category, seller, or all.
-- **Endpoints**:
-    - `GET /products`: View all products.
-    - `POST /products`: Add a new product.
-    - `PUT /products`: Update product details.
-    - `DELETE /products/{id}`: Delete a product.
+## Object-Oriented Programming Concepts and Design Principles
 
----
+### **Classes and Objects**
+- Representing users, products, orders, and payments.
 
-### 5. **Cart Module**
-- **Features**:
-    - Add, view, and remove items from the cart.
-    - Clear the cart before creating a new order.
-- **Endpoints**:
-    - `GET /cart`: View all items in the customer's cart.
-    - `POST /cart/add`: Add an item to the cart.
-    - `DELETE /cart/remove`: Remove an item from the cart.
-    - `DELETE /cart/clear`: Clear the entire cart.
+### **Encapsulation**
+- Used in all classes to secure field access via getters and setters.
+- Example: `User.java` and `Product.java` encapsulate their fields to ensure controlled access.
 
----
+### **Inheritance**
+- Implemented in the user hierarchy with roles like `Customer` and `Admin` inheriting common properties from `User`.
 
-### 6. **Order Module**
-- **Features**:
-    - Place new orders and view order details.
-    - Update order status and cancel orders.
-- **Endpoints**:
-    - `GET /orders`: Retrieve all orders.
-    - `POST /orders/place`: Place a new order.
-    - `PUT /orders/update`: Update an existing order.
-    - `DELETE /orders/cancel`: Cancel an order.
+### **Polymorphism**
+- **Method Overloading**:
+  - Example: `addToCart(Product product)` and `addToCart(Product product, int quantity)` in `Cart.java`.
+- **Method Overriding**:
+  - Example: `toString()` method in `Order.java` overrides the default behavior to provide a custom string representation.
 
----
+### **Exception Handling**
+- Implemented in methods interacting with the database to handle SQL exceptions gracefully.
+- Example: `UserService.java` and `ProductService.java` use try-catch blocks to handle database errors.
 
-### 7. **Payment Module**
-- **Features**:
-    - Manage payments associated with orders.
-    - Update payment methods and view payment details.
-- **Database Integration**:
-    - Payment methods include `CREDIT_CARD`, `DEBIT_CARD`, `PAYPAL`, and `CASH_ON_DELIVERY`.
+### **SOLID Principles**
+- **Single Responsibility Principle**: Each class is focused on a single responsibility (e.g., `UserService` handles user-related operations).
+- **Open-Closed Principle**: The design allows adding new features like payment methods without altering existing code.
+- **Dependency Inversion Principle**: High-level modules depend on abstractions for database operations.
 
----
+### **Design Patterns**
+- **Singleton Pattern**: Used in `DatabaseConnection` to manage a single database connection instance.
+- **Factory Pattern**: Could be extended for creating user or product objects dynamically.
 
-## OOP Concepts and Design Patterns
 
-- **Classes and Objects**: Representing users, products, orders, and payments.
-- **Encapsulation**: Secure field access using getters and setters.
-- **Inheritance**: Users have roles such as Admin and Customer, inheriting common properties.
-- **Polymorphism**:
-    - **Method Overloading**: For example, `addToCart(Product product)` and `addToCart(Product product, int quantity)`.
-    - **Method Overriding**: For example, `viewOrders()` for `Admin` and `Customer`.
-- **Exception Handling**: Handles invalid inputs and database errors gracefully.
 
----
 
-## Installation and Run
-
-1. Clone the repository from the GitHub link provided during submission.
-2. Update the database configuration in the `application.properties` file:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
